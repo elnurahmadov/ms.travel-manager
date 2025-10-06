@@ -1,0 +1,27 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="
+                   http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="6-create-tour-guides" author="elnur">
+        <createTable tableName="tour_guides">
+            <column name="tour_id" type="BIGINT"/>
+            <column name="guide_id" type="BIGINT"/>
+        </createTable>
+        <addPrimaryKey tableName="tour_guides" columnNames="tour_id, guide_id" constraintName="pk_tour_guides"/>
+        <addForeignKeyConstraint
+                baseTableName="tour_guides"
+                baseColumnNames="tour_id"
+                referencedTableName="tours"
+                referencedColumnNames="id"
+                constraintName="fk_tour_guides_tour"/>
+        <addForeignKeyConstraint
+                baseTableName="tour_guides"
+                baseColumnNames="guide_id"
+                referencedTableName="guides"
+                referencedColumnNames="id"
+                constraintName="fk_tour_guides_guide"/>
+    </changeSet>
+
+</databaseChangeLog>
