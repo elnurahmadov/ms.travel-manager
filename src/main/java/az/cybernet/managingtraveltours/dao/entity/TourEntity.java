@@ -1,7 +1,8 @@
-package az.cybernet.managingtraveltours.entity;
+package az.cybernet.managingtraveltours.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "tours")
+@Builder
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tour {
+public class TourEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -33,8 +35,8 @@ public class Tour {
     private Date startDate;
     private Date endDate;
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Destination> destinations;
+    @OneToMany(mappedBy = "tourEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DestinationEntity> destinationEntities;
 
     @ManyToMany
     @JoinTable(
@@ -42,7 +44,7 @@ public class Tour {
             joinColumns = @JoinColumn(name = "tour_id"),
             inverseJoinColumns = @JoinColumn(name = "guide_id")
     )
-    private List<Guide> guides;
+    private List<GuideEntity> guideEntities;
 
     @ManyToMany
     @JoinTable(
@@ -50,7 +52,7 @@ public class Tour {
             joinColumns = @JoinColumn(name = "tour_id"),
             inverseJoinColumns = @JoinColumn(name = "traveler_id")
     )
-    private List<Traveler> travelers;
+    private List<TravelerEntity> travelerEntities;
     @CreatedDate
     @Column(updatable = false)
     private Date createdAt;

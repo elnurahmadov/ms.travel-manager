@@ -1,4 +1,4 @@
-package az.cybernet.managingtraveltours.entity;
+package az.cybernet.managingtraveltours.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Traveler {
+public class TravelerEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -30,8 +30,8 @@ public class Traveler {
     private String lastName;
     private String email;
 
-    @ManyToMany(mappedBy = "travelers")
-    private List<Tour> tours;
+    @ManyToMany(mappedBy = "travelerEntities")
+    private List<TourEntity> tourEntities;
     @CreatedDate
     @Column(updatable = false)
     private Date createdAt;

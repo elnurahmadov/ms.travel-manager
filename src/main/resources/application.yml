@@ -18,9 +18,15 @@ spring:
     show-sql: true
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
   liquibase:
     change-log: classpath:db.changelog/changelog-master.yml
     enabled: true
     contexts: development
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true

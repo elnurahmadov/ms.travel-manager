@@ -1,7 +1,8 @@
-package az.cybernet.managingtraveltours.entity;
+package az.cybernet.managingtraveltours.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,30 +11,34 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
+import java.util.List;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "passports")
+@Table(name = "guides")
+@Builder
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@AllArgsConstructor
 @NoArgsConstructor
-public class Passport {
+@AllArgsConstructor
+public class GuideEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private Guide guide;
+    private String name;
+    private String email;
+    private String phoneNumber;
 
-    private String passportNumber;
-    private Date issueDate;
-    private Date expiryDate;
-    private String country;
+    @OneToOne(mappedBy = "guideEntity", cascade = {PERSIST, MERGE})
+    private PassportEntity passportEntity;
+
+    @ManyToMany(mappedBy = "guideEntities")
+    private List<TourEntity> tourEntities;
     @CreatedDate
     @Column(updatable = false)
     private Date createdAt;
