@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/destinations")
+@RequestMapping("v1/destinations")
 public class DestinationController {
     private final DestinationService destinationService;
 

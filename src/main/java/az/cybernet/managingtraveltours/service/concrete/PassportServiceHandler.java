@@ -1,6 +1,5 @@
 package az.cybernet.managingtraveltours.service.concrete;
 
-import az.cybernet.managingtraveltours.dao.entity.GuideEntity;
 import az.cybernet.managingtraveltours.dao.repository.GuideRepository;
 import az.cybernet.managingtraveltours.dao.repository.PassportRepository;
 import az.cybernet.managingtraveltours.mapper.PassportMapper;
@@ -21,7 +20,7 @@ public class PassportServiceHandler implements PassportService {
     public void savePassport(PassportRequest request) {
         log.info("ActionLog.savePassport.start");
 
-        GuideEntity guideEntity = guideRepository.findById(request.getGuideId())
+        var guideEntity = guideRepository.findById(request.getGuideId())
                 .orElseThrow(() -> new RuntimeException("Guide not found with id: " + request.getGuideId()));
         passportRepository.save(PassportMapper.PASSPORT_MAPPER.buildEntity(request, guideEntity));
 

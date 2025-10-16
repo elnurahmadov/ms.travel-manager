@@ -1,6 +1,6 @@
 package az.cybernet.managingtraveltours.service.concrete;
 
-import az.cybernet.managingtraveltours.dao.entity.TourEntity;
+import az.cybernet.managingtraveltours.aspect.LogExecutionTime;
 import az.cybernet.managingtraveltours.dao.repository.DestinationRepository;
 import az.cybernet.managingtraveltours.dao.repository.TourRepository;
 import az.cybernet.managingtraveltours.model.request.DestinationRequest;
@@ -16,12 +16,13 @@ import static az.cybernet.managingtraveltours.mapper.DestinationMapper.DESTINATI
 @Slf4j
 public class DestinationServiceHandler implements DestinationService {
     private final DestinationRepository destinationRepository;
-    private final TourRepository  tourRepository;
+    private final TourRepository tourRepository;
 
     @Override
+    @LogExecutionTime
     public void addDestination(DestinationRequest request) {
         log.info("ActionLog.addDestination.start");
-        TourEntity tourEntity = tourRepository.getById(request.getTourId());
+        var tourEntity = tourRepository.getById(request.getTourId());
         destinationRepository.save(DESTINATION_MAPPER.buildEntity(request, tourEntity));
         log.info("ActionLog.addDestination.end");
     }

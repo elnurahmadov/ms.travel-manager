@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/guides")
+@RequestMapping("v1/guides")
 public class GuideController {
     private final GuideService guideService;
 

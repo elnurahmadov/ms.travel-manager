@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/passports")
+@RequestMapping("v1/passports")
 public class PassportController {
     private final PassportService passportService;
 
