@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5-create-travelers
+      author: elnur.ahmadov
+      changes:
+        - createTable:
+            tableName: travelers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+
+        - addPrimaryKey:
+            tableName: travelers
+            columnNames: id
+            constraintName: pk_travelers

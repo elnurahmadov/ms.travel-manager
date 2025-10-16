@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-tours
+      author: elnur.ahmadov
+      changes:
+        - createTable:
+            tableName: tours
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: price
+                  type: DECIMAL(10,2)
+              - column:
+                  name: start_date
+                  type: DATE
+              - column:
+                  name: end_date
+                  type: DATE
+        - addPrimaryKey:
+            tableName: tours
+            columnNames: id
+            constraintName: pk_tours

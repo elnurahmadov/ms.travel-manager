@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-create-guides
+      author: elnur.ahmadov
+      changes:
+        - createTable:
+            tableName: guides
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(50)
+
+        - addPrimaryKey:
+            tableName: guides
+            columnNames: id
+            constraintName: pk_guides

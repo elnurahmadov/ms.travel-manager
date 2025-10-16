@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4-create-passports
+      author: elnur.ahmadov
+      changes:
+        - createTable:
+            tableName: passports
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  name: passport_number
+                  type: VARCHAR(50)
+              - column:
+                  name: issue_date
+                  type: DATE
+              - column:
+                  name: expiry_date
+                  type: DATE
+              - column:
+                  name: country
+                  type: VARCHAR(100)
+              - column:
+                  name: guide_id
+                  type: BIGINT
+
+        - addPrimaryKey:
+            tableName: passports
+            columnNames: id
+            constraintName: pk_passports
+
+        - addUniqueConstraint:
+            tableName: passports
+            columnNames: guide_id
+            constraintName: uk_passports_guide
+
+        - addForeignKeyConstraint:
+            baseTableName: passports
+            baseColumnNames: guide_id
+            referencedTableName: guides
+            referencedColumnNames: id
+            constraintName: fk_passports_guide

@@ -2,23 +2,29 @@ package az.cybernet.managingtraveltours.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "tours")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tour {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String name;
@@ -45,4 +51,10 @@ public class Tour {
             inverseJoinColumns = @JoinColumn(name = "traveler_id")
     )
     private List<Traveler> travelers;
+    @CreatedDate
+    @Column(updatable = false)
+    private Date createdAt;
+
+    @LastModifiedDate
+    private Date updatedAt;
 }
