@@ -10,37 +10,33 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
                   autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: location
-                  type: VARCHAR(255)
+                  type: TEXT
+                  constraints:
+                    nullable: false
               - column:
                   name: description
                   type: TEXT
               - column:
                   name: visit_date
                   type: DATE
-              - column:
-                  name: tour_id
-                  type: BIGINT
-              - column:
-                  name: created_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
               - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValue: now()
+              - column:
                   name: updated_at
                   type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-
-        - addPrimaryKey:
-            tableName: destinations
-            columnNames: id
-            constraintName: pk_destinations
-
-        - addForeignKeyConstraint:
-            baseTableName: destinations
-            baseColumnNames: tour_id
-            referencedTableName: tours
-            referencedColumnNames: id
-            constraintName: fk_destinations_tour
+              - column:
+                  name: tour_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_destinations_tours
+                    references: tours(id)
+                    nullable: false

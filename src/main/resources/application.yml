@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
 
 spring:
   application:
@@ -16,14 +14,17 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-    open-in-view: true
+    open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 
   liquibase:
     change-log: classpath:db.changelog/changelog-master.yml
     enabled: true
     contexts: development
+
+  messages:
+    encoding: utf-8
 springdoc:
   api-docs:
     enabled: true

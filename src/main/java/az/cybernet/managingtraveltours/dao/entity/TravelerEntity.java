@@ -1,16 +1,23 @@
 package az.cybernet.managingtraveltours.dao.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -18,24 +25,41 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "travelers")
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class TravelerEntity {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
     private String email;
+    private String lastName;
+    private String firstName;
 
-    @ManyToMany(mappedBy = "travelerEntities")
-    private List<TourEntity> tourEntities;
-    @CreatedDate
-    @Column(updatable = false)
-    private Date createdAt;
+    @ManyToMany
+    @JoinTable(
+            name = "tours_travellers",
+            joinColumns = @JoinColumn(name = "traveler_id"),
+            inverseJoinColumns = @JoinColumn(name = "tour_id")
+    )
+    private List<TourEntity> tours;
 
-    @LastModifiedDate
-    private Date updatedAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof TravelerEntity that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

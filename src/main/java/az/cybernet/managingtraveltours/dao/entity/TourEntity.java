@@ -1,62 +1,73 @@
 package az.cybernet.managingtraveltours.dao.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "tours")
-@Builder
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class TourEntity {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String name;
-    private String description;
     private BigDecimal price;
-    private Date startDate;
-    private Date endDate;
+    private String description;
 
-    @OneToMany(mappedBy = "tourEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DestinationEntity> destinationEntities;
+    private LocalDate endDate;
+    private LocalDate startDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tour_guides",
-            joinColumns = @JoinColumn(name = "tour_id"),
-            inverseJoinColumns = @JoinColumn(name = "guide_id")
-    )
-    private List<GuideEntity> guideEntities;
+    @OneToMany(mappedBy = "tour", cascade = PERSIST)
+    private List<DestinationEntity> destinations;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tour_travelers",
-            joinColumns = @JoinColumn(name = "tour_id"),
-            inverseJoinColumns = @JoinColumn(name = "traveler_id")
-    )
-    private List<TravelerEntity> travelerEntities;
-    @CreatedDate
-    @Column(updatable = false)
-    private Date createdAt;
+    @ManyToMany(mappedBy = "tours")
+    private List<GuideEntity> guides;
 
-    @LastModifiedDate
-    private Date updatedAt;
+    @ManyToMany(mappedBy = "tours", cascade = {PERSIST, MERGE})
+    private Set<TravelerEntity> travelers;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof TourEntity that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

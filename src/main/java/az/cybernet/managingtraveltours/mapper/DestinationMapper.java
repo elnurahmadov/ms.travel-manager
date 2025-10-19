@@ -2,20 +2,39 @@ package az.cybernet.managingtraveltours.mapper;
 
 import az.cybernet.managingtraveltours.dao.entity.DestinationEntity;
 import az.cybernet.managingtraveltours.dao.entity.TourEntity;
-import az.cybernet.managingtraveltours.model.request.DestinationRequest;
+import az.cybernet.managingtraveltours.model.dto.DestinationDto;
 
-import java.util.Date;
+import java.util.List;
 
 public enum DestinationMapper {
     DESTINATION_MAPPER;
 
-    public DestinationEntity buildEntity(DestinationRequest request, TourEntity tourEntity) {
+    public List<DestinationEntity> buildDestinations(List<DestinationDto> destinations, TourEntity tour) {
+        return destinations.stream()
+                .map(it -> toDestinationEntity(it, tour))
+                .toList();
+    }
+
+    public List<DestinationDto> toDestinationList(List<DestinationEntity> destinations) {
+        return destinations.stream()
+                .map(DESTINATION_MAPPER::toDestinationDto)
+                .toList();
+    }
+
+    private DestinationDto toDestinationDto(DestinationEntity destination) {
+        return DestinationDto.builder()
+                .location(destination.getLocation())
+                .visitDate(destination.getVisitDate())
+                .description(destination.getDescription())
+                .build();
+    }
+
+    private DestinationEntity toDestinationEntity(DestinationDto destination, TourEntity tour) {
         return DestinationEntity.builder()
-                .location(request.getLocation())
-                .description(request.getDescription())
-                .visitDate(request.getVisitDate())
-                .tourEntity(tourEntity)
-                .createdAt(new Date())
+                .location(destination.getLocation())
+                .visitDate(destination.getVisitDate())
+                .description(destination.getDescription())
+                .tour(tour)
                 .build();
     }
 }

@@ -1,8 +1,14 @@
 package az.cybernet.managingtraveltours.controller;
 
-import az.cybernet.managingtraveltours.model.request.GuideRequest;
+import az.cybernet.managingtraveltours.model.criteria.PageCriteria;
+import az.cybernet.managingtraveltours.model.request.CreateGuideRequest;
+import az.cybernet.managingtraveltours.model.response.GuideResponse;
+import az.cybernet.managingtraveltours.model.response.PageableResponse;
 import az.cybernet.managingtraveltours.service.abstraction.GuideService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +26,18 @@ public class GuideController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void addGuide(@RequestBody GuideRequest request) {
-        guideService.addGuide(request);
+    public void createGuide(@RequestBody CreateGuideRequest guideRequest) {
+        guideService.createGuide(guideRequest);
+    }
+
+    @GetMapping
+    public PageableResponse<GuideResponse> getGuides(PageCriteria pageCriteria) {
+        return guideService.getGuides(pageCriteria);
+    }
+
+    @PatchMapping("{id}/tours/{tourId}")
+    @ResponseStatus(NO_CONTENT)
+    public void assignTour(@PathVariable Long id, @PathVariable Long tourId) {
+        guideService.assignTour(id, tourId);
     }
 }

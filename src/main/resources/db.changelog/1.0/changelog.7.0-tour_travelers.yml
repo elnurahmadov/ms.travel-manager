@@ -4,30 +4,19 @@ databaseChangeLog:
       author: elnur.ahmadov
       changes:
         - createTable:
-            tableName: tour_travelers
+            tableName: tours_travellers
             columns:
               - column:
                   name: tour_id
                   type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_tours_travelers
+                    references: travelers(id)
+                    nullable: false
               - column:
                   name: traveler_id
                   type: BIGINT
-
-        - addPrimaryKey:
-            tableName: tour_travelers
-            columnNames: tour_id, traveler_id
-            constraintName: pk_tour_travelers
-
-        - addForeignKeyConstraint:
-            baseTableName: tour_travelers
-            baseColumnNames: tour_id
-            referencedTableName: tours
-            referencedColumnNames: id
-            constraintName: fk_tour_travelers_tour
-
-        - addForeignKeyConstraint:
-            baseTableName: tour_travelers
-            baseColumnNames: traveler_id
-            referencedTableName: travelers
-            referencedColumnNames: id
-            constraintName: fk_tour_travelers_traveler
+                  constraints:
+                    foreignKeyName: fk_travelers_tours
+                    references: travelers(id)
+                    nullable: false

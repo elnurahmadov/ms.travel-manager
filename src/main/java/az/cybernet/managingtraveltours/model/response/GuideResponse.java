@@ -1,13 +1,16 @@
-package az.cybernet.managingtraveltours.model.request;
+package az.cybernet.managingtraveltours.model.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class GuideRequest {
+@AllArgsConstructor
+public class GuideResponse {
+    private Long id;
     private String name;
     private String email;
     private String phoneNumber;

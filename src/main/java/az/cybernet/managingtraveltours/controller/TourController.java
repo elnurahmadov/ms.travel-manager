@@ -1,8 +1,15 @@
 package az.cybernet.managingtraveltours.controller;
 
-import az.cybernet.managingtraveltours.model.request.TourRequest;
+import az.cybernet.managingtraveltours.model.criteria.PageCriteria;
+import az.cybernet.managingtraveltours.model.request.AddTravelerRequest;
+import az.cybernet.managingtraveltours.model.request.CreateTourRequest;
+import az.cybernet.managingtraveltours.model.response.PageableResponse;
+import az.cybernet.managingtraveltours.model.response.TourDetailsResponse;
+import az.cybernet.managingtraveltours.model.response.TourResponse;
 import az.cybernet.managingtraveltours.service.abstraction.TourService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +26,23 @@ public class TourController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void addTour(@RequestBody TourRequest request) {
-        tourService.addTour(request);
+    public void createTour(@RequestBody CreateTourRequest tourRequest) {
+        tourService.createTour(tourRequest);
+    }
+
+    @GetMapping
+    public PageableResponse<TourResponse> getTours(PageCriteria pageCriteria) {
+        return tourService.getTours(pageCriteria);
+    }
+
+    @GetMapping("{id}")
+    public TourDetailsResponse getTour(@PathVariable Long id) {
+        return tourService.getTour(id);
+    }
+
+    @PostMapping("{id}/travelers")
+    @ResponseStatus(CREATED)
+    public void addTraveler(@PathVariable Long id, @RequestBody AddTravelerRequest travelerRequest) {
+        tourService.addTraveler(id, travelerRequest);
     }
 }

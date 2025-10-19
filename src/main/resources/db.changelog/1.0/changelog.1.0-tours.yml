@@ -10,32 +10,36 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
                   autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: name
                   type: VARCHAR(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: description
                   type: TEXT
               - column:
                   name: price
-                  type: DECIMAL(10,2)
-              - column:
-                  name: start_date
-                  type: DATE
-              - column:
-                  name: end_date
-                  type: DATE
-              - column:
-                  name: created_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
+                  type: NUMERIC(16, 2)
                   constraints:
                     nullable: false
               - column:
+                  name: start_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValue: now()
+              - column:
                   name: updated_at
                   type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-        - addPrimaryKey:
-            tableName: tours
-            columnNames: id
-            constraintName: pk_tours

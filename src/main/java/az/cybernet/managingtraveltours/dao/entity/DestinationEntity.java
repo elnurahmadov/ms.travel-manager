@@ -1,47 +1,59 @@
 package az.cybernet.managingtraveltours.dao.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "destinations")
-@Builder
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class DestinationEntity {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private String location;
     private String description;
-    private Date visitDate;
+    private LocalDate visitDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TourEntity tourEntity;
-    @CreatedDate
-    @Column(updatable = false)
-    private Date createdAt;
+    @ManyToOne(fetch = LAZY)
+    private TourEntity tour;
 
-    @LastModifiedDate
-    private Date updatedAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DestinationEntity that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

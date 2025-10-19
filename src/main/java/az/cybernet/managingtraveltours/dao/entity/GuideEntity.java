@@ -1,31 +1,39 @@
 package az.cybernet.managingtraveltours.dao.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Set;
 
-import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+
 
 @Entity
 @Table(name = "guides")
-@Builder
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GuideEntity {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -34,15 +42,31 @@ public class GuideEntity {
     private String email;
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "guideEntity", cascade = {PERSIST, MERGE})
-    private PassportEntity passportEntity;
+    @ManyToMany
+    @JoinTable(
+            name = "tours_guides",
+            joinColumns = @JoinColumn(name = "guide_id"),
+            inverseJoinColumns = @JoinColumn(name = "tour_id")
+    )
+    private Set<TourEntity> tours;
 
-    @ManyToMany(mappedBy = "guideEntities")
-    private List<TourEntity> tourEntities;
-    @CreatedDate
-    @Column(updatable = false)
-    private Date createdAt;
+    @OneToOne(mappedBy = "guide", fetch = LAZY, cascade = PERSIST)
+    private PassportEntity passport;
 
-    @LastModifiedDate
-    private Date updatedAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof GuideEntity that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
