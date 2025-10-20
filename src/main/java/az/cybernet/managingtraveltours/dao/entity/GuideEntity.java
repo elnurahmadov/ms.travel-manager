@@ -24,7 +24,6 @@ import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-
 @Entity
 @Table(name = "guides")
 @Getter
