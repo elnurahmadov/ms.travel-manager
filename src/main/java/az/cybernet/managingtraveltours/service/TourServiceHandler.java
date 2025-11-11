@@ -1,5 +1,6 @@
-package az.cybernet.managingtraveltours.service.concrete;
+package az.cybernet.managingtraveltours.service;
 
+import az.cybernet.managingtraveltours.aspect.LogExecutionTime;
 import az.cybernet.managingtraveltours.dao.repository.TourRepository;
 import az.cybernet.managingtraveltours.model.criteria.PageCriteria;
 import az.cybernet.managingtraveltours.model.request.AddTravelerRequest;
@@ -50,6 +51,7 @@ public class TourServiceHandler implements TourService {
     }
 
     @Override
+    @LogExecutionTime
     public void addTraveler(Long id, AddTravelerRequest travelerRequest) {
         log.info("ActionLog.addTraveler.start - {} & {}", id, travelerRequest);
         var tour = tourHistoryService.findById(id);

@@ -1,4 +1,4 @@
-package az.cybernet.managingtraveltours.service.concrete;
+package az.cybernet.managingtraveltours.service;
 
 import az.cybernet.managingtraveltours.dao.entity.TourEntity;
 import az.cybernet.managingtraveltours.dao.repository.TourRepository;

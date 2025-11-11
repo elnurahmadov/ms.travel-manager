@@ -7,7 +7,6 @@ import az.cybernet.managingtraveltours.model.response.TourDetailsResponse;
 import az.cybernet.managingtraveltours.model.response.TourResponse;
 
 import java.util.List;
-import java.util.Set;
 
 import static az.cybernet.managingtraveltours.mapper.DestinationMapper.DESTINATION_MAPPER;
 import static az.cybernet.managingtraveltours.mapper.TravelerMapper.TRAVELER_MAPPER;
@@ -50,7 +49,7 @@ public enum TourMapper {
 
     public void addNewTraveler(TourEntity tour, AddTravelerRequest travelerRequest) {
         var traveler = TRAVELER_MAPPER.buildTravelerEntity(travelerRequest);
-        tour.setTravelers(Set.of(traveler));
+        tour.getTravelers().add(traveler);
         traveler.setTours(List.of(tour));
     }
 }

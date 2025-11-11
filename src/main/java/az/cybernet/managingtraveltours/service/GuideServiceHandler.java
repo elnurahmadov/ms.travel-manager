@@ -1,5 +1,6 @@
-package az.cybernet.managingtraveltours.service.concrete;
+package az.cybernet.managingtraveltours.service;
 
+import az.cybernet.managingtraveltours.aspect.LogExecutionTime;
 import az.cybernet.managingtraveltours.dao.entity.GuideEntity;
 import az.cybernet.managingtraveltours.dao.entity.TourEntity;
 import az.cybernet.managingtraveltours.dao.repository.GuideRepository;
@@ -36,6 +37,7 @@ public class GuideServiceHandler implements GuideService {
     }
 
     @Override
+    @LogExecutionTime
     public void assignTour(Long id, Long tourId) {
         log.info("ActionLog.assignTour.start - {} & {}", id, tourId);
         var tour = tourHistoryService.findById(tourId);
