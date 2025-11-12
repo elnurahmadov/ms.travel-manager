@@ -3,6 +3,7 @@ package az.cybernet.managingtraveltours.mapper
 import az.cybernet.managingtraveltours.dao.entity.DestinationEntity
 import az.cybernet.managingtraveltours.dao.entity.TourEntity
 import az.cybernet.managingtraveltours.dao.entity.TravelerEntity
+import az.cybernet.managingtraveltours.model.dto.DestinationDto
 import az.cybernet.managingtraveltours.model.request.AddTravelerRequest
 import az.cybernet.managingtraveltours.model.request.CreateTourRequest
 import io.github.benas.randombeans.EnhancedRandomBuilder
@@ -17,22 +18,27 @@ class TourMapperTest extends Specification {
     def "TestBuildTourEntity"() {
         given:
         def request = random.nextObject(CreateTourRequest)
+        def destinationDto = random.nextObject(DestinationDto)
+        request.setDestinations([destinationDto])
 
         when:
         def actual = TOUR_MAPPER.buildTourEntity(request)
 
         then:
-        actual.name == request.name
-        actual.price == request.price
-        actual.endDate == request.endDate
-        actual.startDate == request.startDate
-        actual.description == request.description
-        actual.guides == null
-        actual.travelers == null
-        verifyAll(actual.destinations[0]) {
-            location == request.destinations[0].location
-            description == request.destinations[0].description
-            visitDate == request.destinations[0].visitDate
+        verifyAll(actual) {
+            name == request.name
+            price == request.price
+            endDate == request.endDate
+            startDate == request.startDate
+            description == request.description
+            guides == null
+            travelers == null
+            destinations.size() == 1
+            verifyAll(destinations[0]) {
+                location == destinationDto.location
+                description == destinationDto.description
+                visitDate == destinationDto.visitDate
+            }
         }
     }
 
